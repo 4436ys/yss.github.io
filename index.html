@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>固定资产管理系统 - 用户登录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a3c8b 0%, #2c5282 50%, #4a7ba6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景装饰元素 */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 0;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .circle-3 {
+            width: 150px;
+            height: 150px;
+            top: 30%;
+            right: 10%;
+        }
+
+        /* 主容器 */
+        .main-container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            z-index: 1;
+        }
+
+        /* 左侧信息区域 */
+        .info-side {
+            flex: 1;
+            background: linear-gradient(to bottom right, #1e3c8b, #2a5298);
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-side::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            top: -150px;
+            right: -150px;
+        }
+
+        .info-side::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            margin-right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .system-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .system-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .features-list {
+            margin-top: 40px;
+            list-style: none;
+        }
+
+        .features-list li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            background: rgba(255, 255, 255, 0.15);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .feature-text {
+            font-size: 15px;
+        }
+
+        .copyright {
+            margin-top: auto;
+            font-size: 13px;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        /* 登录表单区域 */
+        .form-side {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h1 {
+            color: #1a3c8b;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .login-form {
+            width: 100%;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 42px;
+            color: #1a3c8b;
+            font-size: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #1a3c8b;
+            box-shadow: 0 0 0 3px rgba(26, 60, 139, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: #aaa;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+        }
+
+        .forgot-password {
+            color: #1a3c8b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .forgot-password:hover {
+            color: #0d2a6e;
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #1a3c8b, #2a5298);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(26, 60, 139, 0.2);
+        }
+
+        .login-button i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .login-button:hover {
+            background: linear-gradient(to right, #0d2a6e, #1a3c8b);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 60, 139, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: #1a3c8b;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 消息提示样式 */
+        .message-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 350px;
+        }
+
+        .message-alert {
+            background: #fff;
+            border-left: 5px solid #e74c3c;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        .message-alert.success {
+            border-left-color: #2ecc71;
+        }
+
+        .message-alert.warning {
+            border-left-color: #f39c12;
+        }
+
+        .message-alert.info {
+            border-left-color: #3498db;
+        }
+
+        .message-icon {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .info-side, .form-side {
+                padding: 40px 30px;
+            }
+            
+            .info-side {
+                padding-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .info-side, .form-side {
+                padding: 30px 20px;
+            }
+            
+            .system-title {
+                font-size: 24px;
+            }
+            
+            .form-header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰元素 -->
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+    <div class="bg-circle circle-3"></div>
+    
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 左侧信息区域 -->
+        <div class="info-side">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div>
+                    <div class="system-title">制造业固定资产管理系统</div>
+                    <div class="system-subtitle">Manufacturing Fixed Asset Management System</div>
+                </div>
+            </div>
+            
+            <ul class="features-list">
+                <li>
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-text">安全的资产数据管理</div>
+                </li>
+                <li>
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-text">资产利用率分析报表</div>
+                </li>
+                <li>
+                  <div class="feature-icon">
+                        <i class="fas fa-truck-loading"></i>
+                  </div>
+                    <div class="feature-text">多车间固定资产调度</div>
+                </li>
+                <li>
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="feature-text">快速资产查询与追踪</div>
+                </li>
+            </ul>
+            
+        </div>
+        
+        <!-- 登录表单区域 -->
+        <div class="form-side">
+            <div class="form-header">
+                <h1>用户登录</h1>
+                <p>请输入您的凭据以访问系统</p>
+            </div>
+            
+            <form action="login.html" method="post" class="login-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="uname"><i class="fas fa-user"></i> 用户名</label>
+                    <i class="fas fa-user-circle"></i>
+                    <input type="text" id="uname" name="uname" placeholder="请输入您的用户名" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="passwd"><i class="fas fa-lock"></i> 密码</label>
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="passwd" name="passwd" placeholder="请输入您的密码" required>
+                </div>
+                
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i> 登录系统
+                </button>
+            </form>
+            
+        </div>
+    </div>
+    
+    <!-- 消息提示区域 -->
+    <div class="message-container">
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="message-alert {% if msg.tags %}{{ msg.tags }}{% endif %}">
+                    <div class="message-icon">
+                        {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <i class="fas fa-exclamation-circle"></i>
+                        {% elif msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <i class="fas fa-check-circle"></i>
+                        {% elif msg.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                            <i class="fas fa-exclamation-triangle"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle"></i>
+                        {% endif %}
+                    </div>
+                    <div class="message-content">
+                        {{ msg }}
+                    </div>
+                    <button class="message-close" onclick="this.parentElement.style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <script>
+        // 自动隐藏消息提示
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.message-alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateX(100%)';
+                    setTimeout(() => alert.remove(), 300);
+                }, 5000);
+            });
+        });
+        
+        // 表单提交时的简单验证
+        document.querySelector('.login-form').addEventListener('submit', function(e) {
+            const username = document.getElementById('uname').value.trim();
+            const password = document.getElementById('passwd').value.trim();
+            
+            if (!username || !password) {
+                e.preventDefault();
+                showMessage('请输入完整的登录信息', 'warning');
+                return false;
+            }
+            
+            // 可以添加更多验证逻辑
+            return true;
+        });
+        
+        // 显示自定义消息的函数
+        function showMessage(text, type = 'info') {
+            const container = document.querySelector('.message-container');
+            const alert = document.createElement('div');
+            alert.className = `message-alert ${type}`;
+            
+            let iconClass = 'fas fa-info-circle';
+            if (type === 'success') iconClass = 'fas fa-check-circle';
+            if (type === 'warning') iconClass = 'fas fa-exclamation-triangle';
+            if (type === 'error') iconClass = 'fas fa-exclamation-circle';
+            
+            alert.innerHTML = `
+                <div class="message-icon">
+                    <i class="${iconClass}"></i>
+                </div>
+                <div class="message-content">
+                    ${text}
+                </div>
+                <button class="message-close" onclick="this.parentElement.style.display='none'">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(alert);
+            
+            // 自动移除
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateX(100%)';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
